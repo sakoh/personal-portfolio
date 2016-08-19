@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javasript on Sako Hartounian - Web Developer</title>
-    <link>https://rawgithub.com/sakoh/portfolio/gh-pages/categories/javasript/</link>
+    <link>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/categories/javasript/</link>
     <description>Recent content in Javasript on Sako Hartounian - Web Developer</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;#169; by Sako Hartounian</copyright>
     <lastBuildDate>Tue, 09 Aug 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://rawgithub.com/sakoh/portfolio/gh-pages/categories/javasript/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://rawgithub.com/sakoh/personal-portfolio/gh-pages/categories/javasript/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Creating a Youtube Player with React and Redux</title>
-      <link>https://rawgithub.com/sakoh/portfolio/gh-pages/post/creating-react-redux-youtube-player/</link>
+      <link>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/post/creating-react-redux-youtube-player/</link>
       <pubDate>Tue, 09 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://rawgithub.com/sakoh/portfolio/gh-pages/post/creating-react-redux-youtube-player/</guid>
+      <guid>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/post/creating-react-redux-youtube-player/</guid>
       <description>
 
 &lt;p&gt;Today we will create a youtube player using the &lt;a href=&#34;https://facebook.github.io/react/&#34;&gt;React&lt;/a&gt;, a JavaScript UI component library by Facebook, and &lt;a href=&#34;http://redux.js.org/docs/introduction/&#34;&gt;Redux&lt;/a&gt;, a library for containing the application state in a single object tree and unidirectional dataflow.&lt;/p&gt;
@@ -23,7 +23,7 @@
 &lt;h4 id=&#34;how-redux-and-react-work-together:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;How Redux and React Work together&lt;/h4&gt;
 
 &lt;p&gt;To give a idea of React and Redux work together, take a look at the diagram below:
-&lt;img src=&#34;https://rawgithub.com/sakoh/portfolio/gh-pages/img/react-redux-diagram.png&#34; alt=&#34;React Redux Diagram&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://rawgithub.com/sakoh/personal-portfolio/gh-pages/img/react-redux-diagram.png&#34; alt=&#34;React Redux Diagram&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As you see, components send actions to reducers, which in return the application state of the entire component.&lt;/p&gt;
 
@@ -328,11 +328,11 @@ render(
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;And when you visit &lt;a href=&#34;http://localhost:8080&#34;&gt;http://localhost:8080&lt;/a&gt;, you should see this:
-&lt;img src=&#34;https://rawgithub.com/sakoh/portfolio/gh-pages/img/react-redux-youtube-player.png&#34; alt=&#34;React Redux Youtube Player&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://rawgithub.com/sakoh/personal-portfolio/gh-pages/img/react-redux-youtube-player.png&#34; alt=&#34;React Redux Youtube Player&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now you should be able to search for any youtube video and the preview list to the right should update.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://rawgithub.com/sakoh/portfolio/gh-pages/img/batman-search.png&#34; alt=&#34;Youtube Batman Search&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://rawgithub.com/sakoh/personal-portfolio/gh-pages/img/batman-search.png&#34; alt=&#34;Youtube Batman Search&#34; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;github-code-repository:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Github Code Repository&lt;/h4&gt;
 

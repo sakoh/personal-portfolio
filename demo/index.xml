@@ -2,28 +2,28 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Demos on Sako Hartounian - Web Developer</title>
-    <link>https://rawgithub.com/sakoh/portfolio/gh-pages/demo/</link>
+    <link>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/demo/</link>
     <description>Recent content in Demos on Sako Hartounian - Web Developer</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;#169; by Sako Hartounian</copyright>
-    <atom:link href="https://rawgithub.com/sakoh/portfolio/gh-pages/demo/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://rawgithub.com/sakoh/personal-portfolio/gh-pages/demo/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>React Redux Youtube Player</title>
-      <link>https://rawgithub.com/sakoh/portfolio/gh-pages/demo/react-redux-youtube-player/</link>
+      <link>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/demo/react-redux-youtube-player/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://rawgithub.com/sakoh/portfolio/gh-pages/demo/react-redux-youtube-player/</guid>
+      <guid>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/demo/react-redux-youtube-player/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SB Admin with Drop and Drag Panels</title>
-      <link>https://rawgithub.com/sakoh/portfolio/gh-pages/demo/sb-admin-drop-and-drag/</link>
+      <link>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/demo/sb-admin-drop-and-drag/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://rawgithub.com/sakoh/portfolio/gh-pages/demo/sb-admin-drop-and-drag/</guid>
+      <guid>https://rawgithub.com/sakoh/personal-portfolio/gh-pages/demo/sb-admin-drop-and-drag/</guid>
       <description></description>
     </item>
     
