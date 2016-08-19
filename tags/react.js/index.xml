@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>React.Js on Sako Hartounian - Web Developer</title>
+    <link>https://rawgithub.com/sakoh/portfolio/gh-pages/tags/react/index.js/</link>
+    <description>Recent content in React.Js on Sako Hartounian - Web Developer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright &amp;#169; by Sako Hartounian</copyright>
+    <lastBuildDate>Tue, 09 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://rawgithub.com/sakoh/portfolio/gh-pages/tags/react.js/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Creating a Youtube Player with React and Redux</title>
+      <link>https://rawgithub.com/sakoh/portfolio/gh-pages/post/creating-react-redux-youtube-player/</link>
+      <pubDate>Tue, 09 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://rawgithub.com/sakoh/portfolio/gh-pages/post/creating-react-redux-youtube-player/</guid>
+      <description>
+
+&lt;p&gt;Today we will create a youtube player using the &lt;a href=&#34;https://facebook.github.io/react/&#34;&gt;React&lt;/a&gt;, a JavaScript UI component library by Facebook, and &lt;a href=&#34;http://redux.js.org/docs/introduction/&#34;&gt;Redux&lt;/a&gt;, a library for containing the application state in a single object tree and unidirectional dataflow.&lt;/p&gt;
+
+&lt;h4 id=&#34;how-redux-and-react-work-together:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;How Redux and React Work together&lt;/h4&gt;
+
+&lt;p&gt;To give a idea of React and Redux work together, take a look at the diagram below:
+&lt;img src=&#34;https://rawgithub.com/sakoh/portfolio/gh-pages/img/react-redux-diagram.png&#34; alt=&#34;React Redux Diagram&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you see, components send actions to reducers, which in return the application state of the entire component.&lt;/p&gt;
+
+&lt;h4 id=&#34;getting-started:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Getting started&lt;/h4&gt;
+
+&lt;p&gt;We begin by cloning &lt;a href=&#34;https://github.com/StephenGrider/ReduxSimpleStarter&#34;&gt;Stephen Grider&amp;rsquo;s Redux Simple Starter&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone git@github.com:StephenGrider/ReduxSimpleStarter.git PROJECT_NAME
+cd PROJECT_NAME
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;install the dependencies &lt;a href=&#34;https://github.com/gaearon/redux-thunk&#34;&gt;Redux Thunk&lt;/a&gt;, which is a middleware which allows you to return callbacks that dispatch actions, and &lt;a href=&#34;https://github.com/lodash/lodash&#34;&gt;lodash&lt;/a&gt;, of which we will pull off &lt;code&gt;debounce&lt;/code&gt; to slow down the exection of the search as you are typing.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install --save redux-thunk lodash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;files-to-add:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Files To Add&lt;/h4&gt;
+
+&lt;p&gt;Next will we create the following files in the components folder of the src folder:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; PROJECT_NAME/
+   src/
+      components/
+        +  search_bar.js
+        +  video_player.js
+        +  video_preview.js
+        +  video_preview_list.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then we are going to create the following files in actions folder of the src folder:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;PROJECT_NAME/
+  src/
+     actions/
+       + index.js
+       + types.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then we are going to create the following files in reducers folder of the src folder:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;PROJECT_NAME/
+  src/
+     reducers/
+       + index.js
+       + videos_reducer.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;components:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Components&lt;/h4&gt;
+
+&lt;p&gt;Then add the following code the new created files:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/components/app.js
+import { debounce } from &#39;lodash&#39;;
+import React, { Component } from &#39;react&#39;;
+import YTSearch from &#39;youtube-api-search&#39;;
+import { connect } from &#39;react-redux&#39;;
+
+import * as actions from &#39;../actions&#39;;
+import SearchBar from &#39;./search_bar&#39;;
+import VideoPlayer from &#39;./video_player&#39;;
+import VideoPreviewList from &#39;./video_preview_list&#39;;
+
+class App extends Component {
+  componentWillMount() {
+    this.props.searchVideos(&#39;surfboards&#39;);
+  }
+
+  render() {
+    const { videos, selectedVideo } = this.props;
+
+    if(!videos || !selectedVideo) {
+      return (
+        &amp;lt;div&amp;gt;...Loading&amp;lt;/div&amp;gt;
+      );
+    }
+
+    return (
+      &amp;lt;div className=&amp;quot;app-component&amp;quot;&amp;gt;
+        &amp;lt;SearchBar/&amp;gt;
+        &amp;lt;div className=&amp;quot;row&amp;quot;&amp;gt;
+          &amp;lt;VideoPlayer
+            video={selectedVideo} /&amp;gt;
+          &amp;lt;VideoPreviewList
+            videos={videos} /&amp;gt;
+        &amp;lt;/div&amp;gt;
+      &amp;lt;/div&amp;gt;
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  return { videos: state.video.videos, selectedVideo: state.video.selectedVideo };
+}
+
+export default connect(mapStateToProps, actions)(App);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/components/search_bar.js
+import React, { Component } from &#39;react&#39;;
+import { connect } from &#39;react-redux&#39;;
+import { debounce } from &#39;lodash&#39;;
+import * as actions from &#39;../actions&#39;;
+
+class SearchBar extends Component {
+
+  onInputChange(term) {
+    debounce(this.props.searchVideos(term), 300);
+  }
+
+  render() {
+    return (
+      &amp;lt;div className=&amp;quot;search-bar-component form-group row&amp;quot;&amp;gt;
+        &amp;lt;input
+          className=&amp;quot;form-control&amp;quot;
+          onChange={event =&amp;gt; this.onInputChange(event.target.value)}
+          type=&amp;quot;text&amp;quot;
+          placeholder=&amp;quot;Search&amp;quot;/&amp;gt;
+      &amp;lt;/div&amp;gt;
+    );
+  }
+}
+
+export default connect(null, actions)(SearchBar);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/components/video_player.js
+import React from &#39;react&#39;;
+
+export default function VideoPlayer({ video }) {
+  if(!video) {
+    return (
+      &amp;lt;div&amp;gt;...Loading&amp;lt;/div&amp;gt;
+    );
+  }
+
+  const {
+    snippet: { title, description }, id: { videoId }
+  } = video;
+
+  const url = `https://youtube.com/embed/${videoId}`;
+
+  return (
+    &amp;lt;div className=&amp;quot;video-player-component col-md-8&amp;quot;&amp;gt;
+      &amp;lt;div className=&amp;quot;embed-responsive embed-responsive-16by9&amp;quot;&amp;gt;
+        &amp;lt;iframe className=&amp;quot;embed-responsive-item&amp;quot; src={url}&amp;gt;&amp;lt;/iframe&amp;gt;
+      &amp;lt;/div&amp;gt;
+      &amp;lt;div className=&amp;quot;details&amp;quot;&amp;gt;
+        &amp;lt;strong&amp;gt;{title}&amp;lt;/strong&amp;gt;
+        &amp;lt;p&amp;gt;{description}&amp;lt;/p&amp;gt;
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+  );
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/components/video_preview.js
+import React, { Component } from &#39;react&#39;;
+import { connect } from &#39;react-redux&#39;;
+import * as actions from &#39;../actions&#39;;
+
+class VideoPreview extends Component {
+
+  render() {
+    const { video, selectVideo } = this.props;
+    const {
+      snippet: {
+        title,
+        thumbnails: {
+          default: { url }
+        }
+      }
+    } = video;
+
+    return (
+      &amp;lt;li onClick={() =&amp;gt; selectVideo(video)} className=&amp;quot;list-group-item video-preview-component&amp;quot;&amp;gt;
+        &amp;lt;div className=&amp;quot;video-list media&amp;quot;&amp;gt;
+          &amp;lt;div className=&amp;quot;media-left&amp;quot;&amp;gt;
+            &amp;lt;img className=&amp;quot;media-object&amp;quot; src={url} /&amp;gt;
+          &amp;lt;/div&amp;gt;
+          &amp;lt;div className=&amp;quot;media-body&amp;quot;&amp;gt;
+            &amp;lt;div className=&amp;quot;media-heading&amp;quot;&amp;gt;{title}&amp;lt;/div&amp;gt;
+          &amp;lt;/div&amp;gt;
+        &amp;lt;/div&amp;gt;
+      &amp;lt;/li&amp;gt;
+    );
+  }
+
+}
+
+export default connect(null, actions)(VideoPreview);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/components/video_preview_list.js
+import React from &#39;react&#39;;
+import VideoPreview from &#39;./video_preview&#39;;
+
+export default function VideoPreviewList({ videos }) {
+
+  const videosList = videos.map(video =&amp;gt;
+    &amp;lt;VideoPreview key={video.etag} video={video} /&amp;gt;
+  );
+
+  return (
+    &amp;lt;ul className=&amp;quot;col-md-4 list-group&amp;quot;&amp;gt;
+      {videosList}
+    &amp;lt;/ul&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;actions:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Actions&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/actions/types.js
+export const SEARCH_VIDEOS = &#39;SEARCH_VIDEOS&#39;;
+export const SELECT_VIDEO = &#39;SELECT_VIDEO&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this example, we are using &lt;a href=&#34;https://github.com/gaearon/redux-thunk&#34;&gt;Redux Thunk&lt;/a&gt;, which is a middleware that returns actions as a callback before sending them to the Reducer. This real for this is because we need to grab data from the youtube API server to use in the action before sending it to the reducer, which will in turn send it to the application state.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/actions/index.js
+import YTSearch from &#39;youtube-api-search&#39;;
+import { SEARCH_VIDEOS, SELECT_VIDEO } from &#39;./types&#39;;
+
+const API_KEY = &amp;quot;$YOUTUBE_API_KEY&amp;quot;;
+
+export const searchVideos = (term) =&amp;gt; (dispatch) =&amp;gt; {
+  YTSearch({ key: API_KEY, term }, videos =&amp;gt; {
+
+    const payload = {
+      videos,
+      selectedVideo: videos[0]
+    };
+
+    dispatch({ type: SEARCH_VIDEOS, payload });
+  });
+}
+
+export function selectVideo(video) {
+  return { type: SELECT_VIDEO, payload: video };
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;reducers:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Reducers&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// PROJECT_NAME/src/reducers/videos_reducer.js
+import {
+  SEARCH_VIDEOS,
+  SELECT_VIDEO
+} from &#39;../actions/types&#39;;
+
+export default function(state = {}, action) {
+  switch(action.type) {
+    case SEARCH_VIDEOS:
+      return { ...state, selectedVideo: action.payload.selectedVideo, videos: action.payload.videos };
+    case SELECT_VIDEO:
+      return { ...state, selectedVideo: action.payload };
+  }
+
+  return state;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;import { combineReducers } from &#39;redux&#39;;
+import videosReducer from &#39;./videos_reducer&#39;;
+
+const rootReducer = combineReducers({
+  video: videosReducer
+});
+
+export default rootReducer;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;index-file:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Index File&lt;/h4&gt;
+
+&lt;p&gt;Now in your index file of your src folder to activate your redux-thunk as a middleware:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;import React from &#39;react&#39;;
+import { render } from &#39;react-dom&#39;;
+import { Provider } from &#39;react-redux&#39;;
+import { createStore, applyMiddleware } from &#39;redux&#39;;
+import thunk from &#39;redux-thunk&#39;;
+
+import App from &#39;./components/app&#39;;
+import reducers from &#39;./reducers&#39;;
+
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+const store = createStoreWithMiddleware(reducers);
+
+render(
+  &amp;lt;Provider store={store}&amp;gt;
+    &amp;lt;App /&amp;gt;
+  &amp;lt;/Provider&amp;gt;,
+  document.querySelector(&#39;.container&#39;)
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;final-result:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Final Result&lt;/h4&gt;
+
+&lt;p&gt;now run the following command in your terminal:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And when you visit &lt;a href=&#34;http://localhost:8080&#34;&gt;http://localhost:8080&lt;/a&gt;, you should see this:
+&lt;img src=&#34;https://rawgithub.com/sakoh/portfolio/gh-pages/img/react-redux-youtube-player.png&#34; alt=&#34;React Redux Youtube Player&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now you should be able to search for any youtube video and the preview list to the right should update.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://rawgithub.com/sakoh/portfolio/gh-pages/img/batman-search.png&#34; alt=&#34;Youtube Batman Search&#34; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;github-code-repository:28ea30338ee8b6ca6a01972ac2254731&#34;&gt;Github Code Repository&lt;/h4&gt;
+
+&lt;p&gt;The source code is found at &lt;a href=&#34;http://github.com/sakoh/react-redux-youtube-player&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
